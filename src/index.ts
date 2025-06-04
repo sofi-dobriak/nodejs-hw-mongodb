@@ -1,7 +1,9 @@
+import { initMongoDB } from './db/initMongoConnection';
 import { setupServer } from './server';
 
-const bootsTrap = () => {
+const bootstrap = async () => {
+  await initMongoDB();
   setupServer();
 };
 
-bootsTrap();
+bootstrap();
