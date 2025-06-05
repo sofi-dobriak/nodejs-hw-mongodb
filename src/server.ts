@@ -1,10 +1,10 @@
 import express, { NextFunction, Response, Request, Express } from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
-import { getEvnVariables } from './utils/getEvtVariables';
 import { getAllContacts, getContactByID } from './services/contacts';
+import { getEnvVariables } from './utils/getEnvVariables';
 
-const PORT: number = Number(getEvnVariables('PORT', '3000'));
+const PORT: number = Number(getEnvVariables('PORT')) ?? 3000;
 
 export const setupServer = () => {
   const app: Express = express();
