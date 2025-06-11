@@ -6,7 +6,7 @@ export const getAllContacts = async () => {
   const contacts = await contactsCollection.find();
 
   if (!contacts) {
-    throw createHttpError(404, 'Not found contacts');
+    throw createHttpError(404, 'Contacts not found');
   }
 
   return contacts;
@@ -16,7 +16,7 @@ export const getContactByID = async (contactId: string) => {
   const contact = await contactsCollection.findById(contactId);
 
   if (!contact) {
-    throw createHttpError(404, 'Not found contact');
+    throw createHttpError(404, 'Contact not found');
   }
 
   return contact;
@@ -52,5 +52,9 @@ export const updateContact = async (
 };
 
 export const deleteContact = async (contactId: string) => {
-  await contactsCollection.findByIdAndDelete(contactId);
+  const contact = await contactsCollection.findByIdAndDelete(contactId);
+
+  if (!contact) {
+    throw createHttpError(404, 'Contact not found');
+  }
 };
