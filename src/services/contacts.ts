@@ -47,9 +47,7 @@ export const updateContact = async (
     throw createHttpError(404, 'Contact not found');
   }
 
-  return {
-    contact: result.value,
-  };
+  return result.value;
 };
 
 export const deleteContact = async (contactId: string) => {
