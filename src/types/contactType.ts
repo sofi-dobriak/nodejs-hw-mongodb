@@ -9,3 +9,16 @@ export interface CreateContact {
 }
 
 export type UpdateContact = Partial<CreateContact>;
+
+interface FilterType {
+  contactType?: ContactType;
+  isFavourite?: boolean;
+}
+
+export interface QueryParams {
+  page: number;
+  perPage: number;
+  sortOrder: string;
+  sortBy: string;
+  filter: FilterType;
+}
