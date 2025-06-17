@@ -12,6 +12,6 @@ export const errorHandlerMiddleware: ErrorRequestHandler = (
   res.status(status).json({
     status,
     message,
-    data: err.message,
+    data: err,
   });
 };
