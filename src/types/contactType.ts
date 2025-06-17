@@ -1,4 +1,4 @@
-type ContactType = 'work' | 'home' | 'personal';
+export type ContactType = 'work' | 'home' | 'personal';
 
 export interface CreateContact {
   name: string;
@@ -19,6 +19,6 @@ export interface QueryParams {
   page: number;
   perPage: number;
   sortOrder: string;
-  sortBy: string;
+  sortBy?: string;
   filter: FilterType;
 }

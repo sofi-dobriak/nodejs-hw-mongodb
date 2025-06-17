@@ -1,11 +1,14 @@
 import { ParsedQs } from 'qs';
+import { ContactType } from '../types/contactType';
 import { getBooleanFromQuery, getStringFromQuery } from './getTypeFromQuery';
 
-const parseType = (contactType?: string): string | undefined => {
+const parseType = (contactType?: string): ContactType | undefined => {
   if (typeof contactType !== 'string') return;
 
-  const validTypes = ['work', 'home', 'personal'];
-  return validTypes.includes(contactType) ? contactType : undefined;
+  const validTypes: ContactType[] = ['work', 'home', 'personal'];
+  return validTypes.includes(contactType as ContactType)
+    ? (contactType as ContactType)
+    : undefined;
 };
 
 const parseFavourite = (isFavourite?: boolean): true | undefined => {
