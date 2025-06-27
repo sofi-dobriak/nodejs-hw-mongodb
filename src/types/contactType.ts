@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 export type ContactType = 'work' | 'home' | 'personal';
 
 export interface CreateContact {
@@ -11,7 +13,7 @@ export interface CreateContact {
 export type UpdateContact = Partial<CreateContact>;
 
 interface FilterType {
-  userId?: string;
+  userId?: Types.ObjectId;
   contactType?: ContactType;
   isFavourite?: boolean;
 }

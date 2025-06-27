@@ -7,6 +7,7 @@ import {
 } from '../types/contactType';
 import { calculatePaginationData } from '../utils/calculatePaginationData';
 import { SORT_ORDER } from '../constants/constants';
+import { Types } from 'mongoose';
 
 export const getAllContacts = async ({
   page = 1,
@@ -20,12 +21,12 @@ export const getAllContacts = async ({
 
   const contactsQuery = contactsCollection.find();
 
-  if (filter.contactType) {
-    contactsQuery.where('contactType').equals(filter.contactType);
-  }
-
   if (filter.userId) {
     contactsQuery.where('userId').equals(filter.userId);
+  }
+
+  if (filter.contactType) {
+    contactsQuery.where('contactType').equals(filter.contactType);
   }
 
   if (filter.isFavourite) {
@@ -55,8 +56,11 @@ export const getAllContacts = async ({
   };
 };
 
-export const getContactByID = async (contactId: string) => {
-  const contact = await contactsCollection.findById(contactId);
+export const getContactByID = async (
+  contactId: string,
+  userId: Types.ObjectId,
+) => {
+  const contact = await contactsCollection.findOne({ contactId, userId });
 
   if (!contact) {
     throw createHttpError(404, 'Contact not found');
@@ -72,10 +76,11 @@ export const createContact = async (payload: CreateContact) => {
 
 export const updateContact = async (
   contactId: string,
+  userId: Types.ObjectId,
   payload: UpdateContact,
 ) => {
   const result = await contactsCollection.findOneAndUpdate(
-    { _id: contactId },
+    { _id: contactId, userId },
     payload,
     { includeResultMetadata: true },
   );
@@ -87,8 +92,14 @@ export const updateContact = async (
   return result.value;
 };
 
-export const deleteContact = async (contactId: string) => {
-  const contact = await contactsCollection.findByIdAndDelete(contactId);
+export const deleteContact = async (
+  contactId: string,
+  userId: Types.ObjectId,
+) => {
+  const contact = await contactsCollection.findOneAndDelete({
+    contactId,
+    userId,
+  });
 
   if (!contact) {
     throw createHttpError(404, 'Contact not found');
