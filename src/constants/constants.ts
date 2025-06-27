@@ -11,3 +11,6 @@ export const SORT_ORDER: SortOrder = {
   ASC: 'asc',
   DESC: 'desc',
 };
+
+export const FIFTEEN_MINUTES = 1000 * 60 * 15;
+export const THIRD_DAYS = 1000 * 60 * 60 * 24 * 30;

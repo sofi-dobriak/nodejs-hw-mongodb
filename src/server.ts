@@ -3,6 +3,7 @@ import express, { Express } from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
 import router from './routers';
+import cookieParser from 'cookie-parser';
 
 import { getEnvVariables } from './utils/getEnvVariables';
 import { notFountMiddleware } from './middlewares/notFoundHandler';
@@ -14,14 +15,15 @@ export const setupServer = () => {
   const app: Express = express();
   app.use(express.json());
   app.use(cors());
+  app.use(cookieParser());
 
-  app.use(
-    pino({
-      transport: {
-        target: 'pino-pretty',
-      },
-    }),
-  );
+  // app.use(
+  //   pino({
+  //     transport: {
+  //       target: 'pino-pretty',
+  //     },
+  //   }),
+  // );
 
   app.use(router);
 

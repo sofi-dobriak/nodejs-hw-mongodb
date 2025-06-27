@@ -11,6 +11,7 @@ export interface CreateContact {
 export type UpdateContact = Partial<CreateContact>;
 
 interface FilterType {
+  userId?: string;
   contactType?: ContactType;
   isFavourite?: boolean;
 }
