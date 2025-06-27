@@ -9,11 +9,13 @@ import {
 import { parsePaginationParams } from '../utils/parsePaginationParams';
 import { parseSortParams } from '../utils/parseSortParams';
 import { parseFilterParams } from '../utils/parseFilterParams';
+import createHttpError from 'http-errors';
 
 export const getContactsController: RequestHandler = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortOrder, sortBy } = parseSortParams(req.query);
   const filter = parseFilterParams(req.query);
+  const userId = req.user?._id;
 
   const contacts = await getAllContacts({
     page,
@@ -42,6 +44,10 @@ export const getContactByIDController: RequestHandler = async (req, res) => {
 };
 
 export const createContactController: RequestHandler = async (req, res) => {
+  if (!req.user) {
+    throw createHttpError(401, 'User not authenticated');
+  }
+
   const contact = await createContact({ ...req.body, userId: req.user._id });
 
   res.status(201).json({
