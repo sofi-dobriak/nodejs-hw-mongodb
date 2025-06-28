@@ -2,6 +2,7 @@ import createHttpError from 'http-errors';
 import { contactsCollection } from '../db/models/contacts';
 import {
   CreateContact,
+  GetDeleteContactByID,
   QueryParams,
   UpdateContact,
 } from '../types/contactType';
@@ -56,11 +57,11 @@ export const getAllContacts = async ({
   };
 };
 
-export const getContactByID = async (
-  contactId: string,
-  userId: Types.ObjectId,
-) => {
-  const contact = await contactsCollection.findOne({ contactId, userId });
+export const getContactByID = async ({
+  _id: contactId,
+  userId,
+}: GetDeleteContactByID) => {
+  const contact = await contactsCollection.findOne({ _id: contactId, userId });
 
   if (!contact) {
     throw createHttpError(404, 'Contact not found');
@@ -92,12 +93,12 @@ export const updateContact = async (
   return result.value;
 };
 
-export const deleteContact = async (
-  contactId: string,
-  userId: Types.ObjectId,
-) => {
+export const deleteContact = async ({
+  _id: contactId,
+  userId,
+}: GetDeleteContactByID) => {
   const contact = await contactsCollection.findOneAndDelete({
-    contactId,
+    _id: contactId,
     userId,
   });
 

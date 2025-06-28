@@ -25,3 +25,8 @@ export interface QueryParams {
   sortBy?: string;
   filter: FilterType;
 }
+
+export interface GetDeleteContactByID {
+  _id: string;
+  userId: Types.ObjectId;
+}

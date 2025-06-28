@@ -42,7 +42,10 @@ export const getContactByIDController: RequestHandler = async (req, res) => {
     throw createHttpError(401, 'User not authenticated');
   }
 
-  const contact = await getContactByID(contactId, req.user._id);
+  const contact = await getContactByID({
+    _id: contactId,
+    userId: req.user._id,
+  });
 
   res.status(200).json({
     status: 200,
@@ -88,7 +91,10 @@ export const deleteContactController: RequestHandler = async (req, res) => {
     throw createHttpError(401, 'User not authenticated');
   }
 
-  await deleteContact(contactId, req.user._id);
+  await deleteContact({
+    _id: contactId,
+    userId: req.user._id,
+  });
 
   res.status(204).send();
 };
