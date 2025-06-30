@@ -48,7 +48,6 @@ export const getContactByIDController: RequestHandler = async (req, res) => {
     userId: req.user._id,
   });
 
-
   res.status(200).json({
     status: 200,
     message: `Successfully found contact with id ${contactId}!`,
@@ -92,7 +91,6 @@ export const deleteContactController: RequestHandler = async (req, res) => {
   if (!req.user) {
     throw createHttpError(401, 'User not authenticated');
   }
-
 
   await deleteContact({
     _id: contactId,
