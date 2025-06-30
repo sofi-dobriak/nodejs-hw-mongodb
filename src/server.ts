@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import { getEnvVariables } from './utils/getEnvVariables';
 import { notFountMiddleware } from './middlewares/notFoundHandler';
 import { errorHandlerMiddleware } from './middlewares/errorHandler';
+import { UPLOAD_DIR } from './constants/constants';
 
 const PORT: number = Number(getEnvVariables('PORT')) ?? 3000;
 
@@ -26,6 +27,7 @@ export const setupServer = () => {
   // );
 
   app.use(router);
+  app.use('/uploads', express.static(UPLOAD_DIR));
 
   app.use(notFountMiddleware);
   app.use(errorHandlerMiddleware);

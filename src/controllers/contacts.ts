@@ -10,6 +10,9 @@ import { parsePaginationParams } from '../utils/parsePaginationParams';
 import { parseSortParams } from '../utils/parseSortParams';
 import { parseFilterParams } from '../utils/parseFilterParams';
 import createHttpError from 'http-errors';
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir';
+import { getEnvVariables } from '../utils/getEnvVariables';
+import { saveFileToCloudinary } from '../utils/sevaFileToCloudinary';
 
 export const getContactsController: RequestHandler = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
@@ -60,7 +63,27 @@ export const createContactController: RequestHandler = async (req, res) => {
     throw createHttpError(401, 'User not authenticated');
   }
 
-  const contact = await createContact({ ...req.body, userId: req.user._id });
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+    if (getEnvVariables('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+
+  const contact = await createContact({
+    ...req.body,
+    userId: req.user._id,
+    photo: photoUrl,
+  });
+
+  if (!contact) {
+    throw createHttpError(404, 'Contact not found');
+  }
 
   res.status(201).json({
     status: 201,
@@ -76,7 +99,25 @@ export const updateContactController: RequestHandler = async (req, res) => {
     throw createHttpError(401, 'User not authenticated');
   }
 
-  const contact = await updateContact(contactId, req.user._id, req.body);
+  const photo = req.file;
+  let photoUrl;
+
+  if (photo) {
+    if (getEnvVariables('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+
+  const contact = await updateContact(contactId, req.user._id, {
+    ...req.body,
+    photo: photoUrl,
+  });
+
+  if (!contact) {
+    throw createHttpError(404, 'Contact not found');
+  }
 
   res.status(200).json({
     status: 200,
