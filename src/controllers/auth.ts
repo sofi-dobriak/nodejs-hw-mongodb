@@ -78,6 +78,16 @@ export const requestResetEmailController: RequestHandler = async (req, res) => {
   });
 };
 
+export const resetPasswordController: RequestHandler = async (req, res) => {
+  await resetPassword(req.body);
+
+  res.status(200).json({
+    status: 200,
+    message: 'Password has been successfully reset.',
+    data: {},
+  });
+};
+
 function setupSession(res: Response, session: UserSession) {
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
@@ -89,13 +99,3 @@ function setupSession(res: Response, session: UserSession) {
     expires: new Date(Date.now() + THIRD_DAYS),
   });
 }
-
-export const resetPasswordController: RequestHandler = async (req, res) => {
-  await resetPassword(req.body);
-
-  res.status(200).json({
-    status: 200,
-    message: 'Password has been successfully reset.',
-    data: {},
-  });
-};
