@@ -138,19 +138,12 @@ export const requestResetToken = async (email: string) => {
     link: `${getEnvVariables('APP_DOMAIN')}/reset-password?token=${resetToken}`,
   });
 
-  try {
-    await sendEmail({
-      from: getEnvVariables(SMTP.SMTP_FROM),
-      to: email,
-      subject: 'Reset your password',
-      html,
-    });
-  } catch {
-    throw createHttpError(
-      500,
-      'Failed to send the email, please try again later.',
-    );
-  }
+  return await sendEmail({
+    from: getEnvVariables(SMTP.SMTP_FROM),
+    to: email,
+    subject: 'Reset your password',
+    html,
+  });
 };
 
 export const resetPassword = async (payload: JwtPayload) => {
