@@ -9,7 +9,6 @@ import {
 } from '../services/auth';
 import { THIRD_DAYS } from '../constants/constants';
 import { UserSession } from '../types/session';
-import createHttpError from 'http-errors';
 
 export const registerUserController: RequestHandler = async (req, res) => {
   const user = await registerUser(req.body);

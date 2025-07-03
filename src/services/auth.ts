@@ -37,7 +37,7 @@ export const loginUser = async (payload: User) => {
   const user = await userCollection.findOne({ email: payload.email });
 
   if (!user) {
-    throw createHttpError(401, 'User not found');
+    throw createHttpError(404, 'User not found');
   }
 
   const isEqualPassword = await bcrypt.compare(payload.password, user.password);

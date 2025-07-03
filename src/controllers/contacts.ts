@@ -18,7 +18,6 @@ export const getContactsController: RequestHandler = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortOrder, sortBy } = parseSortParams(req.query);
   const filter = parseFilterParams(req.query);
-  const userId = req.user?._id;
 
   if (!req.user) {
     throw createHttpError(401, 'User not authenticated');
